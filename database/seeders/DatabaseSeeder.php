@@ -14,12 +14,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::factory(10)->create();
 
         User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('admin'),
         ]);
+
+        $this->call([
+            LocationSeeder::class,
+            AirlineSeeder::class,
+            AirportSeeder::class,
+            FlightSeeder::class,
+            PassengerSeeder::class,
+            PaymentInformationSeeder::class,
+        ]);
+        
     }
 }

@@ -24,14 +24,13 @@ class Ticket extends Model
         'ticket_status',
         'ticket_number',
         'booking_code',
-        'payment_information',
+        'payment_information_id',
     ];
 
     protected $casts = [
         'purchase_date' => 'datetime',
         'issue_date' => 'datetime',
         'checkin_date' => 'datetime',
-        'payment_information' => 'array',
     ];
 
     /**
@@ -48,5 +47,13 @@ class Ticket extends Model
     public function passenger(): BelongsTo|Passenger
     {
         return $this->belongsTo(Passenger::class);
+    }
+
+    /**
+     * @return BelongsTo|PaymentInformation
+     */
+    public function paymentInformation(): BelongsTo|PaymentInformation
+    {
+        return $this->belongsTo(PaymentInformation::class);
     }
 }

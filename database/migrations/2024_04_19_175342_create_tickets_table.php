@@ -16,10 +16,9 @@ return new class extends Migration
             $table->dateTime('purchase_date');
             $table->dateTime('issue_date');
             $table->dateTime('checkin_date')->nullable();
-            $table->unsignedBigInteger('flight_id');
-            $table->foreign('flight_id')->references('id')->on('flights')->onDelete('cascade');
-            $table->unsignedBigInteger('passenger_id');
-            $table->foreign('passenger_id')->references('id')->on('passengers')->onDelete('cascade');
+            $table->foreignId('flight_id')->constrained()->onDelete('cascade');
+            $table->foreignId('passenger_id')->constrained()->onDelete('cascade');
+            $table->foreignId('payment_information_id')->constrained('payment_information')->onDelete('cascade');
             $table->string('purchase_location');
             $table->string('seat_type');
             $table->string('seat_number');
@@ -28,7 +27,6 @@ return new class extends Migration
             $table->string('ticket_status');
             $table->string('ticket_number');
             $table->string('booking_code');
-            $table->text('payment_information')->nullable();
             $table->timestamps();
         });
         
