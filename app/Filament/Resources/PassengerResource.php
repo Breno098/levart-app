@@ -2,8 +2,11 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\CountryEnum;
 use App\Filament\Resources\PassengerResource\Pages;
 use App\Filament\Resources\PassengerResource\RelationManagers;
+use App\Filament\Resources\PessengerResource\RelationManagers\TicketsRelationManager;
+use App\Helpers\DataHelper;
 use App\Models\Passenger;
 use Filament\Forms;
 use Filament\Forms\Components\DateTimePicker;
@@ -21,7 +24,7 @@ class PassengerResource extends Resource
 {
     protected static ?string $model = Passenger::class;
 
-    public static $icon = 'heroicon-o-user';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
 
     protected static ?string $modelLabel = 'Passageiro';
 
@@ -36,11 +39,16 @@ class PassengerResource extends Resource
                     ->required(),
                 TextInput::make('phone')
                     ->label('Telefone')
+                    ->tel()
                     ->required(),
                 DateTimePicker::make('date_of_birth')
                     ->label('Data de Nascimento')
                     ->displayFormat('d/m/Y')
                     ->native(false)
+                    ->time(false)
+                    ->minDate(now()->subYears(150))
+                    ->maxDate(now())
+                    ->closeOnDateSelection()
                     ->required(),
                 Select::make('gender')
                     ->label('Gênero')
@@ -50,15 +58,17 @@ class PassengerResource extends Resource
                         'other' => 'Outro'
                     ])
                     ->required(),
-                TextInput::make('identification_document')
+                TextInput::make('identity_document')
                     ->label('Documento de Identificação')
-                    ->required(),
+                    ->required()
+                    ->disabledOn('edit'),
                 TextInput::make('email')
                     ->label('E-mail')
                     ->required()
                     ->email(),
-                TextInput::make('nationality')
+                Select::make('nationality')
                     ->label('Nacionalidade')
+                    ->options(CountryEnum::toValuesWithLabels())
                     ->required(),
             ]);
     }
@@ -71,6 +81,12 @@ class PassengerResource extends Resource
                     ->label('Nome')
                     ->sortable()
                     ->searchable(),
+                TextColumn::make('identity_document')
+                    ->label('Documento')
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query->where('identity_document', 'like', "{$search}%");
+                    })
+                    ->limit(6, '***'),
                 TextColumn::make('date_of_birth')
                     ->label('Data de Nascimento')
                     ->date('d/m/Y'),
@@ -82,9 +98,13 @@ class PassengerResource extends Resource
                         default => 'Outro'
                     }),
                 TextColumn::make('email')
-                    ->label('E-mail')
-                    ->sortable()
-                    ->searchable(),
+                    ->label('Contatos')
+                    ->description(fn (Passenger $record): string => $record->phone)
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query
+                            ->where('phone', 'like', "{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%");
+                    }),
             ])
             ->filters([
             ])
@@ -95,13 +115,14 @@ class PassengerResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('name');
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            TicketsRelationManager::class
         ];
     }
 

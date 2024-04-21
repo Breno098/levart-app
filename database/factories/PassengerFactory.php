@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\CountryEnum;
+use App\Helpers\DataHelper;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,7 +25,7 @@ class PassengerFactory extends Factory
             'gender' => $this->faker->randomElement(['male', 'female']),
             'identity_document' => $this->faker->numerify('##########'),
             'email' => $this->faker->unique()->safeEmail,
-            'nationality' => $this->faker->country,
+            'nationality' => $this->faker->randomElement(CountryEnum::toValues()),
         ];
     }
 }
