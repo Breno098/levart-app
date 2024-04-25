@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Collection;
 
 class Ticket extends Model
 {
@@ -15,7 +17,6 @@ class Ticket extends Model
         'issue_date',
         'checkin_date',
         'flight_id',
-        'passenger_id',
         'purchase_location',
         'seat_type',
         'seat_number',
@@ -42,11 +43,11 @@ class Ticket extends Model
     }
 
     /**
-     * @return BelongsTo|Passenger
+     * @return BelongsToMany|Collection<Passenger>
      */
-    public function passenger(): BelongsTo|Passenger
+    public function passengers(): BelongsToMany|Collection
     {
-        return $this->belongsTo(Passenger::class);
+        return $this->belongsToMany(Passenger::class);
     }
 
     /**

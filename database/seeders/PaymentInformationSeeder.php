@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Passenger;
 use App\Models\PaymentInformation;
 use App\Models\PaymentMethod;
 use App\Models\Ticket;
@@ -41,9 +42,13 @@ class PaymentInformationSeeder extends Seeder
 
         PaymentInformation::chunk(10, function ($paymentInformation) {
             foreach ($paymentInformation as $paymentInformationOne) {
-                Ticket::factory()->state([
+                $ticket = Ticket::factory()->state([
                     'payment_information_id' => $paymentInformationOne->id,
                 ])->create();
+
+                $ticket->passengers()->sync(
+                    Passenger::factory()->count(rand(1, 3))->create()
+                );
             }
         });
     }

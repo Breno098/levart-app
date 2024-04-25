@@ -22,6 +22,8 @@ class PaymentInformationFactory extends Factory
             },
             'amount' => $this->faker->randomFloat(2, 100, 1000),
             'currency' => $this->faker->randomElement(['USD', 'EUR', 'GBP']),
+            'payer_name' => $this->faker->name(),
+            'payer_email' => $this->faker->unique()->email(),
         ];
     }
 }

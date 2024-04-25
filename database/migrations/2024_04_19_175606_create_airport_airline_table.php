@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('airport_airline', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('airport_id');
-            $table->foreign('airport_id')->references('id')->on('airports')->onDelete('cascade');
-            $table->unsignedBigInteger('airline_id');
-            $table->foreign('airline_id')->references('id')->on('airlines')->onDelete('cascade');
+            $table->foreignId('airport_id')->constrained('airports')->onDelete('cascade');
+            $table->foreignId('airline_id')->constrained('airlines')->onDelete('cascade');
             $table->timestamps();
         });
     }

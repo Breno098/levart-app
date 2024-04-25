@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\CountryEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
@@ -27,11 +28,11 @@ class Passenger extends Model
         'nationality' => CountryEnum::class
     ];
 
-     /**
-     * @return HasMany|Collection<Ticket>
+    /**
+     * @return BelongsTo|Collection<Ticket>
      */
-    public function tickets(): HasMany|Collection
+    public function tickets(): BelongsToMany|Collection
     {
-        return $this->hasMany(Ticket::class);
+        return $this->belongsToMany(Ticket::class);
     }
 }
