@@ -46,9 +46,15 @@ class PaymentInformationSeeder extends Seeder
                     'payment_information_id' => $paymentInformationOne->id,
                 ])->create();
 
-                $ticket->passengers()->sync(
-                    Passenger::factory()->count(rand(1, 3))->create()
-                );
+                Passenger::factory()
+                    ->count(rand(1, 3))
+                    ->create()
+                    ->each(function(Passenger $passenger) use ($ticket) {
+                        $ticket->passengers()->attach($passenger, [
+                            'seat_type' => fake()->randomElement(['economy', 'business', 'first_class']),
+                            'seat_number' => fake()->unique()->randomNumber(3),
+                        ]);
+                    });
             }
         });
     }

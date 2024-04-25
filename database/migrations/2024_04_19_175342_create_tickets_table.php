@@ -19,8 +19,6 @@ return new class extends Migration
             $table->foreignId('flight_id')->constrained()->onDelete('cascade');
             $table->foreignId('payment_information_id')->constrained('payment_information')->onDelete('cascade');
             $table->string('purchase_location');
-            $table->string('seat_type');
-            $table->string('seat_number');
             $table->integer('checked_baggage_quantity');
             $table->decimal('checked_baggage_weight', 10, 2);
             $table->string('ticket_status');

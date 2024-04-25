@@ -18,8 +18,6 @@ class Ticket extends Model
         'checkin_date',
         'flight_id',
         'purchase_location',
-        'seat_type',
-        'seat_number',
         'checked_baggage_quantity',
         'checked_baggage_weight',
         'ticket_status',
@@ -47,7 +45,10 @@ class Ticket extends Model
      */
     public function passengers(): BelongsToMany|Collection
     {
-        return $this->belongsToMany(Passenger::class);
+        return $this->belongsToMany(Passenger::class)->withPivotValue([
+            'seat_type',
+            'seat_number',
+        ]);
     }
 
     /**
