@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Enums\CountryEnum;
 use App\Filament\Resources\PassengerResource\Pages;
 use App\Filament\Resources\PassengerResource\RelationManagers;
-use App\Filament\Resources\PessengerResource\RelationManagers\TicketsRelationManager;
+use App\Filament\Resources\PassengerResource\RelationManagers\TicketsRelationManager;
 use App\Helpers\DataHelper;
 use App\Models\Passenger;
 use Filament\Forms;

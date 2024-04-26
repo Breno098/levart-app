@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\PessengerResource\RelationManagers;
+namespace App\Filament\Resources\PassengerResource\RelationManagers;
 
+use App\Enums\TicketStatusEnum;
 use App\Models\Location;
 use App\Models\Passenger;
 use App\Models\Ticket;
@@ -52,27 +53,20 @@ class TicketsRelationManager extends RelationManager
                 TextColumn::make('issue_date')
                     ->label("Emissão")
                     ->date('d/m/Y H:i'),
-                TextColumn::make('flight.departureAirport.location.city')
+                TextColumn::make('from_city')
                     ->label("Origem")
-                    ->description(fn (Ticket $ticket): string => $ticket?->flight?->departureAirport?->location?->country),
-                TextColumn::make('flight.destinationAirport.location.city')
+                    ->description(fn (Ticket $ticket): string => $ticket?->from_country),
+                TextColumn::make('to_city')
                     ->label("Destino")
-                    ->description(fn (Ticket $ticket): string => $ticket?->flight?->departureAirport?->location?->country),
+                    ->description(fn (Ticket $ticket): string => $ticket?->to_country),
                 TextColumn::make('ticket_status')
                     ->label("Código"),
                 TextColumn::make('ticket_status')
                     ->label("Status")
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'issued' => 'gray',
-                        'used' => 'success',
-                        'cancelled' => 'danger',
-                    })
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'issued' => 'Emitida',
-                        'used' => 'Utilizada',
-                        'cancelled' => 'Cancelado',
-                    }),
+                    ->color(fn (TicketStatusEnum $state): string => $state->color())
+                    ->formatStateUsing(fn (TicketStatusEnum $state): string => $state->label())
+                    ->icon(fn (TicketStatusEnum $state): string => $state->icon())
             ])
             ->filters([
             ])
