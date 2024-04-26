@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('airports', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('location_id');
-            $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');
             $table->string('iata_code');
             $table->string('icao_code');
-            $table->integer('runways_number');
+            $table->string('city');
+            $table->string('country');
+            $table->string('address');
+            $table->string('postal_code');
             $table->timestamps();
         });
     }

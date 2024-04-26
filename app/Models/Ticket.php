@@ -57,7 +57,7 @@ class Ticket extends Model
     protected function fromCity(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this?->flight?->departureAirport?->location?->city,
+            get: fn () => $this?->flight?->departureAirport?->city,
         );
     }
 
@@ -67,7 +67,7 @@ class Ticket extends Model
     protected function fromCountry(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this?->flight?->departureAirport?->location?->country,
+            get: fn () => $this?->flight?->departureAirport?->country,
         );
     }
 
@@ -77,7 +77,7 @@ class Ticket extends Model
     protected function toCity(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this?->flight?->destinationAirport?->location?->city,
+            get: fn () => $this?->flight?->destinationAirport?->city,
         );
     }
 
@@ -87,7 +87,7 @@ class Ticket extends Model
     protected function toCountry(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this?->flight?->destinationAirport?->location?->country,
+            get: fn () => $this?->flight?->destinationAirport?->country,
         );
     }
 
@@ -118,10 +118,7 @@ class Ticket extends Model
      */
     public function passengers(): BelongsToMany|Collection
     {
-        return $this->belongsToMany(Passenger::class)->withPivotValue([
-            'seat_type',
-            'seat_number',
-        ]);
+        return $this->belongsToMany(Passenger::class);
     }
 
     /**

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Collection;
 
 class Airline extends Model
 {
@@ -16,4 +18,12 @@ class Airline extends Model
         'phone',
         'email',
     ];
+
+    /**
+     * @return BelongsTo|Collection<Airport>
+     */
+    public function airports(): BelongsToMany|Collection
+    {
+        return $this->belongsToMany(Airport::class);
+    }
 }

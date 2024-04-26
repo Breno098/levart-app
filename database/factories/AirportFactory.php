@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\CountryEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,12 +19,12 @@ class AirportFactory extends Factory
     {
         return [
             'name' => $this->faker->unique()->company . ' Airport',
-            'location_id' => function () {
-                return \App\Models\Location::factory()->create()->id;
-            },
             'iata_code' => $this->faker->unique()->regexify('[A-Z]{3}'),
             'icao_code' => $this->faker->unique()->regexify('[A-Z]{4}'),
-            'runways_number' => $this->faker->numberBetween(1, 5),
+            'city' => $this->faker->city,
+            'country' => $this->faker->randomElement(CountryEnum::toValues()),
+            'address' => $this->faker->address,
+            'postal_code' => $this->faker->postcode,
         ];
     }
 }

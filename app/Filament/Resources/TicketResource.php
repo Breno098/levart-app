@@ -40,19 +40,29 @@ class TicketResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('ticket_number')
-                ->label("Código"),
+                    ->label("Código")
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('purchase_date')
                     ->label("Data de compra")
-                    ->date('d/m/Y H:i'),
+                    ->date('d/m/Y H:i')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('issue_date')
                     ->label("Emissão")
-                    ->date('d/m/Y H:i'),
+                    ->date('d/m/Y H:i')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('from_city')
                     ->label("Origem")
-                    ->description(fn (Ticket $ticket): string => $ticket?->from_country),
+                    ->description(fn (Ticket $ticket): string => $ticket?->from_country)
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('to_city')
                     ->label("Destino")
-                    ->description(fn (Ticket $ticket): string => $ticket?->to_country),
+                    ->description(fn (Ticket $ticket): string => $ticket?->to_country)
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('ticket_status')
                     ->label("Código"),
                 TextColumn::make('ticket_status')

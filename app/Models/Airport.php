@@ -17,22 +17,17 @@ class Airport extends Model
         'location_id',
         'iata_code',
         'icao_code',
-        'runways_number',
+        'city',
+        'country',
+        'address',
+        'postal_code',
     ];
-
-    /**
-     * @return BelongsTo|Location
-     */
-    public function location(): BelongsTo|Location
-    {
-        return $this->belongsTo(Location::class);
-    }
 
     /**
      * @return BelongsTo|Collection<Airline>
      */
     public function airlines(): BelongsToMany|Collection
     {
-        return $this->belongsToMany(Airline::class, 'airport_airline');
+        return $this->belongsToMany(Airline::class);
     }
 }

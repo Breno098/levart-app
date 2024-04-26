@@ -26,15 +26,15 @@ class FlightFactory extends Factory
             },
             'description' => $this->faker->sentence,
             'departure_airport_id' => function () {
-                return \App\Models\Airport::factory()->create()->id;
+                return \App\Models\Airport::get()->random()->id ?? \App\Models\Airport::factory()->create()->id;
             },
             'departure_gate' => $this->faker->randomElement(['A', 'B', 'C']),
             'destination_airport_id' => function () {
-                return \App\Models\Airport::factory()->create()->id;
+                return \App\Models\Airport::get()->random()->id ?? \App\Models\Airport::factory()->create()->id;
             },
             'destination_gate' => $this->faker->randomElement(['D', 'E', 'F']),
             'airline_id' => function () {
-                return \App\Models\Airline::factory()->create()->id;
+                return \App\Models\Airline::get()->random()->id ?? \App\Models\Airline::factory()->create()->id;
             },
             'flight_number' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{4}'),
             'flight_status' => $this->faker->randomElement(['scheduled', 'cancelled', 'delayed', 'completed']),

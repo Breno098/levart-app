@@ -23,8 +23,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
-            LocationSeeder::class,
-            AirlineSeeder::class,
             AirportSeeder::class,
             FlightSeeder::class,
             // PassengerSeeder::class,
