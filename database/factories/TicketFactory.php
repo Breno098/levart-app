@@ -21,8 +21,8 @@ class TicketFactory extends Factory
             'purchase_date' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'issue_date' => $this->faker->dateTimeBetween('-1 month', 'now'),
             'checkin_date' => $this->faker->dateTimeBetween('now', '+1 week'),
-            'flight_id' => function () {
-                return \App\Models\Flight::factory()->create()->id;
+            'trip_id' => function () {
+                return \App\Models\Trip::get()->random()->id ?? \App\Models\Trip::factory()->create()->id;
             },
             'purchase_location' => $this->faker->randomElement(['online', 'counter']),
             'checked_baggage_quantity' => $this->faker->numberBetween(0, 3),

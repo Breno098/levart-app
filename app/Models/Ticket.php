@@ -18,7 +18,7 @@ class Ticket extends Model
         'purchase_date',
         'issue_date',
         'checkin_date',
-        'flight_id',
+        'trip_id',
         'purchase_location',
         'checked_baggage_quantity',
         'checked_baggage_weight',
@@ -57,7 +57,7 @@ class Ticket extends Model
     protected function fromCity(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this?->flight?->departureAirport?->city,
+            get: fn () => $this?->trip?->departureAirport?->city,
         );
     }
 
@@ -67,7 +67,7 @@ class Ticket extends Model
     protected function fromCountry(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this?->flight?->departureAirport?->country,
+            get: fn () => $this?->trip?->departureAirport?->country,
         );
     }
 
@@ -77,7 +77,7 @@ class Ticket extends Model
     protected function toCity(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this?->flight?->destinationAirport?->city,
+            get: fn () => $this?->trip?->destinationAirport?->city,
         );
     }
 
@@ -87,7 +87,7 @@ class Ticket extends Model
     protected function toCountry(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this?->flight?->destinationAirport?->country,
+            get: fn () => $this?->trip?->destinationAirport?->country,
         );
     }
 
@@ -106,11 +106,11 @@ class Ticket extends Model
      */
 
     /**
-     * @return BelongsTo|Flight
+     * @return BelongsTo|Trip
      */
-    public function flight(): BelongsTo|Flight
+    public function trip(): BelongsTo|Trip
     {
-        return $this->belongsTo(Flight::class);
+        return $this->belongsTo(Trip::class);
     }
 
     /**

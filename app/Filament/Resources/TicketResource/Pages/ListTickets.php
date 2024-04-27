@@ -9,7 +9,8 @@ use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Resources\Components\Tab;
 use Illuminate\Database\Eloquent\Builder;
-
+use Illuminate\Support\Str;
+ 
 class ListTickets extends ListRecords
 {
     protected static string $resource = TicketResource::class;
@@ -28,7 +29,9 @@ class ListTickets extends ListRecords
         ];
 
         foreach (TicketStatusEnum::cases() as $status) {
-            $tabs[$status->value] = Tab::make($status->label())
+            $label = Str::plural($status->label());
+
+            $tabs[$status->value] = Tab::make($label)
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('ticket_status', $status))
                 ->icon($status->icon())
                 ->badgeColor($status->color())

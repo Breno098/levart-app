@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Flight>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Trip>
  */
-class FlightFactory extends Factory
+class TripFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -21,9 +21,6 @@ class FlightFactory extends Factory
             'estimated_departure_time' => $this->faker->dateTimeBetween('now', '+1 month'),
             'arrival_time' => $this->faker->dateTimeBetween('+1 hour', '+3 hours'),
             'estimated_arrival_time' => $this->faker->dateTimeBetween('+1 hour', '+3 hours'),
-            'airplane_id' => function () {
-                return \App\Models\Airplane::factory()->create()->id;
-            },
             'description' => $this->faker->sentence,
             'departure_airport_id' => function () {
                 return \App\Models\Airport::get()->random()->id ?? \App\Models\Airport::factory()->create()->id;
@@ -36,10 +33,11 @@ class FlightFactory extends Factory
             'airline_id' => function () {
                 return \App\Models\Airline::get()->random()->id ?? \App\Models\Airline::factory()->create()->id;
             },
-            'flight_number' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{4}'),
-            'flight_status' => $this->faker->randomElement(['scheduled', 'cancelled', 'delayed', 'completed']),
-            'flight_type' => $this->faker->randomElement(['domestic', 'international']),
-            'ticket_price' => $this->faker->randomFloat(2, 100, 1000),
+            'status' => $this->faker->randomElement(['scheduled', 'cancelled', 'delayed', 'completed']),
+            'type' => $this->faker->randomElement(['domestic', 'international']),
+            'economic_seats' => $this->faker->numberBetween(50, 200),
+            'executive_seats' => $this->faker->numberBetween(10, 50),
+            'first_class_seats' => $this->faker->numberBetween(5, 20),
         ];
     }
 }

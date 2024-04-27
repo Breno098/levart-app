@@ -11,27 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('flights', function (Blueprint $table) {
+        Schema::create('trips', function (Blueprint $table) {
             $table->id();
             $table->dateTime('departure_time');
             $table->dateTime('estimated_departure_time');
             $table->dateTime('arrival_time');
             $table->dateTime('estimated_arrival_time');
-            $table->unsignedBigInteger('airplane_id');
-            $table->foreign('airplane_id')->references('id')->on('airplanes')->onDelete('cascade');
             $table->string('description');
-            $table->unsignedBigInteger('departure_airport_id');
-            $table->foreign('departure_airport_id')->references('id')->on('airports')->onDelete('cascade');
+            $table->foreignId('departure_airport_id')->constrained('airports')->onDelete('cascade');
             $table->string('departure_gate')->nullable();
-            $table->unsignedBigInteger('destination_airport_id');
-            $table->foreign('destination_airport_id')->references('id')->on('airports')->onDelete('cascade');
+            $table->foreignId('destination_airport_id')->constrained('airports')->onDelete('cascade');
             $table->string('destination_gate')->nullable();
             $table->unsignedBigInteger('airline_id');
             $table->foreign('airline_id')->references('id')->on('airlines')->onDelete('cascade');
-            $table->string('flight_number');
-            $table->string('flight_status');
-            $table->string('flight_type');
-            $table->decimal('ticket_price', 10, 2);
+            $table->string('status');
+            $table->string('type');
+            $table->integer('economic_seats');
+            $table->integer('executive_seats');
+            $table->integer('first_class_seats');
             $table->timestamps();
         });
         
@@ -42,6 +39,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('flights');
+        Schema::dropIfExists('trips');
     }
 };

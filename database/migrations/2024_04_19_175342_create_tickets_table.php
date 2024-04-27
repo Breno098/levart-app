@@ -16,7 +16,7 @@ return new class extends Migration
             $table->dateTime('purchase_date');
             $table->dateTime('issue_date');
             $table->dateTime('checkin_date')->nullable();
-            $table->foreignId('flight_id')->constrained()->onDelete('cascade');
+            $table->foreignId('trip_id')->constrained()->onDelete('cascade');
             $table->foreignId('payment_information_id')->constrained('payment_information')->onDelete('cascade');
             $table->string('purchase_location');
             $table->integer('checked_baggage_quantity');

@@ -5,8 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
-class Flight extends Model
+class Trip extends Model
 {
     use HasFactory;
 
@@ -15,17 +17,17 @@ class Flight extends Model
         'estimated_departure_time',
         'arrival_time',
         'estimated_arrival_time',
-        'airplane_id',
         'description',
         'departure_airport_id',
         'departure_gate',
         'destination_airport_id',
         'destination_gate',
         'airline_id',
-        'flight_number',
-        'flight_status',
-        'flight_type',
-        'ticket_price',
+        'status',
+        'type',
+        'economic_seats',
+        'executive_seats',
+        'first_class_seats',
     ];
 
     protected $casts = [
@@ -34,14 +36,6 @@ class Flight extends Model
         'arrival_time' => 'datetime',
         'estimated_arrival_time' => 'datetime',
     ];
-
-    /**
-     * @return BelongsTo|Airport
-     */
-    public function airplane(): BelongsTo|Airplane
-    {
-        return $this->belongsTo(Airplane::class);
-    }
 
     /**
      * @return BelongsTo|Airport
@@ -65,5 +59,13 @@ class Flight extends Model
     public function airline(): BelongsTo|Airline
     {
         return $this->belongsTo(Airline::class);
+    }
+
+    /**
+     * @return HasMany|Collection<Ticket>
+     */
+    public function tickets(): HasMany|Collection
+    {
+        return $this->hasMany(Ticket::class);
     }
 }
