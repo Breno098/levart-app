@@ -16,28 +16,30 @@ class TripFactory extends Factory
      */
     public function definition(): array
     {
+        $departureTimeCheck = fake()->boolean();
+
         return [
-            'departure_time' => $this->faker->dateTimeBetween('now', '+1 month'),
-            'estimated_departure_time' => $this->faker->dateTimeBetween('now', '+1 month'),
-            'arrival_time' => $this->faker->dateTimeBetween('+1 hour', '+3 hours'),
-            'estimated_arrival_time' => $this->faker->dateTimeBetween('+1 hour', '+3 hours'),
-            'description' => $this->faker->sentence,
+            'departure_time' => $departureTimeCheck ? fake()->dateTimeBetween('now', '+1 month') : null,
+            'estimated_departure_time' => fake()->dateTimeBetween('now', '+1 month'),
+            'arrival_time' => $departureTimeCheck && fake()->boolean() ? fake()->dateTimeBetween('+1 hour', '+3 hours') : null,
+            'estimated_arrival_time' => fake()->dateTimeBetween('+1 hour', '+3 hours'),
+            'description' => fake()->sentence,
             'departure_airport_id' => function () {
                 return \App\Models\Airport::get()->random()->id ?? \App\Models\Airport::factory()->create()->id;
             },
-            'departure_gate' => $this->faker->randomElement(['A', 'B', 'C']),
+            'departure_gate' => fake()->randomElement(['A', 'B', 'C']),
             'destination_airport_id' => function () {
                 return \App\Models\Airport::get()->random()->id ?? \App\Models\Airport::factory()->create()->id;
             },
-            'destination_gate' => $this->faker->randomElement(['D', 'E', 'F']),
+            'destination_gate' => fake()->randomElement(['D', 'E', 'F']),
             'airline_id' => function () {
                 return \App\Models\Airline::get()->random()->id ?? \App\Models\Airline::factory()->create()->id;
             },
-            'status' => $this->faker->randomElement(['scheduled', 'cancelled', 'delayed', 'completed']),
-            'type' => $this->faker->randomElement(['domestic', 'international']),
-            'economic_seats' => $this->faker->numberBetween(50, 200),
-            'executive_seats' => $this->faker->numberBetween(10, 50),
-            'first_class_seats' => $this->faker->numberBetween(5, 20),
+            'status' => fake()->randomElement(['scheduled', 'cancelled', 'delayed', 'completed']),
+            'type' => fake()->randomElement(['domestic', 'international']),
+            'economic_seats' => fake()->numberBetween(50, 200),
+            'executive_seats' => fake()->numberBetween(10, 50),
+            'first_class_seats' => fake()->numberBetween(5, 20),
         ];
     }
 }

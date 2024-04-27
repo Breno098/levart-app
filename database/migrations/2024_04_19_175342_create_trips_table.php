@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('trips', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('departure_time');
-            $table->dateTime('estimated_departure_time');
-            $table->dateTime('arrival_time');
-            $table->dateTime('estimated_arrival_time');
+            $table->dateTime('departure_time')->nullable();
+            $table->dateTime('estimated_departure_time')->nullable();
+            $table->dateTime('arrival_time')->nullable();
+            $table->dateTime('estimated_arrival_time')->nullable();
             $table->string('description');
             $table->foreignId('departure_airport_id')->constrained('airports')->onDelete('cascade');
             $table->string('departure_gate')->nullable();

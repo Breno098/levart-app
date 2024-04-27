@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Enums\TripStatusEnum;
+use App\Enums\TripTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Trip extends Model
 {
@@ -35,7 +38,57 @@ class Trip extends Model
         'estimated_departure_time' => 'datetime',
         'arrival_time' => 'datetime',
         'estimated_arrival_time' => 'datetime',
+        'status' => TripStatusEnum::class,
+        'type' => TripTypeEnum::class
     ];
+
+     /**
+     * Atributes
+     */
+
+    /**
+     * @return Attribute
+     */
+    protected function fromCity(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this?->departureAirport?->city,
+        );
+    }
+
+    /**
+     * @return Attribute
+     */
+    protected function fromCountry(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this?->departureAirport?->country,
+        );
+    }
+
+    /**
+     * @return Attribute
+     */
+    protected function toCity(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this?->destinationAirport?->city,
+        );
+    }
+
+    /**
+     * @return Attribute
+     */
+    protected function toCountry(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this?->destinationAirport?->country,
+        );
+    }
+
+    /**
+     * Relationships
+     */
 
     /**
      * @return BelongsTo|Airport
