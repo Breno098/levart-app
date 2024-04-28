@@ -25,7 +25,9 @@ class Ticket extends Model
         'ticket_status',
         'ticket_number',
         'booking_code',
-        'payment_information_id',
+        'payment_method_id',
+        'amount',
+        'currency',
     ];
 
     protected $casts = [
@@ -122,10 +124,10 @@ class Ticket extends Model
     }
 
     /**
-     * @return BelongsTo|PaymentInformation
+     * @return BelongsTo|PaymentMethod
      */
-    public function paymentInformation(): BelongsTo|PaymentInformation
+    public function paymentMethod(): BelongsTo|PaymentMethod
     {
-        return $this->belongsTo(PaymentInformation::class);
+        return $this->belongsTo(PaymentMethod::class);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Enums\TripStatusEnum;
 use App\Filament\Resources\TripResource\Pages;
 use App\Filament\Resources\TripResource\RelationManagers;
+use App\Filament\Resources\TripResource\RelationManagers\TicketsRelationManager;
 use App\Models\Airline;
 use App\Models\Airport;
 use App\Models\Trip;
@@ -70,7 +71,7 @@ class TripResource extends Resource
                     ->seconds(false)
                     ->displayFormat('d/m/Y, H:i')
                     ->disabled(),
-                    Select::make('destination_airport_id')
+                Select::make('destination_airport_id')
                     ->relationship('destinationAirport')
                     ->label("Destino")
                     ->columnSpan('full')
@@ -147,7 +148,7 @@ class TripResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            TicketsRelationManager::class
         ];
     }
 

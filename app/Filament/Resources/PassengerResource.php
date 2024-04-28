@@ -34,42 +34,7 @@ class PassengerResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->label('Nome')
-                    ->required(),
-                TextInput::make('phone')
-                    ->label('Telefone')
-                    ->tel()
-                    ->required(),
-                DateTimePicker::make('date_of_birth')
-                    ->label('Data de Nascimento')
-                    ->displayFormat('d/m/Y')
-                    ->native(false)
-                    ->time(false)
-                    ->minDate(now()->subYears(150))
-                    ->maxDate(now())
-                    ->closeOnDateSelection()
-                    ->required(),
-                Select::make('gender')
-                    ->label('Gênero')
-                    ->options([
-                        'male' => 'Masculino',
-                        'female' => 'Feminino',
-                        'other' => 'Outro'
-                    ])
-                    ->required(),
-                TextInput::make('identity_document')
-                    ->label('Documento de Identificação')
-                    ->required()
-                    ->disabledOn('edit'),
-                TextInput::make('email')
-                    ->label('E-mail')
-                    ->required()
-                    ->email(),
-                Select::make('nationality')
-                    ->label('Nacionalidade')
-                    ->options(CountryEnum::toValuesWithLabels())
-                    ->required(),
+                ...self::getForm()
             ]);
     }
 
@@ -132,6 +97,48 @@ class PassengerResource extends Resource
             'index' => Pages\ListPassengers::route('/'),
             'create' => Pages\CreatePassenger::route('/create'),
             'edit' => Pages\EditPassenger::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getForm(): array
+    {
+        return [
+            TextInput::make('name')
+                ->label('Nome')
+                ->required(),
+            TextInput::make('phone')
+                ->label('Telefone')
+                ->tel()
+                ->required(),
+            DateTimePicker::make('date_of_birth')
+                ->label('Data de Nascimento')
+                ->displayFormat('d/m/Y')
+                ->native(false)
+                ->time(false)
+                ->minDate(now()->subYears(150))
+                ->maxDate(now())
+                ->closeOnDateSelection()
+                ->required(),
+            Select::make('gender')
+                ->label('Gênero')
+                ->options([
+                    'male' => 'Masculino',
+                    'female' => 'Feminino',
+                    'other' => 'Outro'
+                ])
+                ->required(),
+            TextInput::make('identity_document')
+                ->label('Documento de Identificação')
+                ->required()
+                ->disabledOn('edit'),
+            TextInput::make('email')
+                ->label('E-mail')
+                ->required()
+                ->email(),
+            Select::make('nationality')
+                ->label('Nacionalidade')
+                ->options(CountryEnum::toValuesWithLabels())
+                ->required(),
         ];
     }
 }

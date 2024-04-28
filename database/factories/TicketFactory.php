@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\PaymentInformation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -30,6 +29,13 @@ class TicketFactory extends Factory
             'ticket_status' => $this->faker->randomElement(['issued', 'cancelled', 'used']),
             'ticket_number' => $this->faker->unique()->regexify('[A-Z0-9]{8}'),
             'booking_code' => $this->faker->unique()->regexify('[A-Z0-9]{6}'),
+            'payment_method_id' => function () {
+                return \App\Models\PaymentMethod::factory()->create()->id;
+            },
+            'amount' => $this->faker->randomFloat(2, 100, 1000),
+            'currency' => $this->faker->randomElement(['USD', 'EUR', 'BRL']),
+            'payer_name' => $this->faker->name(),
+            'payer_email' => $this->faker->unique()->email(),
         ];
     }
 }

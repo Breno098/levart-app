@@ -74,10 +74,8 @@ class TicketsRelationManager extends RelationManager
                 Action::make('cancel')
                     ->label("Cancelar")
                     ->requiresConfirmation()
-                    ->hidden(fn (Ticket $ticket) => $ticket->ticket_status !== 'issued')
-                    ->action(fn (Ticket $ticket) => $ticket->update([
-                        'ticket_status' => 'cancelled'
-                    ]))
+                    ->hidden(fn (Ticket $ticket) => $ticket->can_cancel)
+                    ->action(fn (Ticket $ticket) => $ticket->cancel())
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
