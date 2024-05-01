@@ -82,53 +82,72 @@ class TicketsRelationManager extends RelationManager
             ->headerActions([
                 CreateAction::make('emit_ticket')
                     ->label("Emitir nova passagem")
-                    ->model(Ticket::class)
                     ->form([
-                        Repeater::make('passengers')
-                            ->relationship('passengers')
+                        Repeater::make('ticketPassagens')
+                            ->relationship()
                             ->label("Passageiros")
                             ->schema([
-                                Select::make('passenger')
+                                Select::make('passenger_id')
                                     ->label("Passageiro")
-                                    ->options(Passenger::get()->pluck('name', 'id'))
+                                    ->relationship('passenger', 'name')
+                                    ->options(Passenger::orderBy('name')->get()->pluck('name', 'id'))
                                     ->searchable(['name', 'email', 'identity_document'])
                                     ->createOptionForm(PassengerResource::getForm())
+                                    ->required(),
+
+                                Select::make('seat_type')
+                                    ->label("Tipo de assento")
+                                    ->options([
+                                        'economy' => 'Econômico', 
+                                        'business' => 'Executivo',
+                                        'first_class' => 'Primeira classe'
+                                    ])
+                                    ->required(),
+
+                                Select::make('seat_number')
+                                    ->label("Número de assento")
+                                    ->options(range(1, 50))
                                     ->required(),
                             ])
                             ->addActionLabel('Adicionar passageiro'),
 
-                            /** Dados de pagamento */
-                            Select::make('payment_method_id')
-                                ->label("Forma de pagamento")
-                                ->options(PaymentMethod::get()->pluck('name', 'id'))
-                                ->required(),
-                            Radio::make('currency')
-                                ->label("Moeda")
-                                ->inline()
-                                ->default('EUR')
-                                ->options([
-                                    'EUR' => "Euro (€)",
-                                    'USD' => "Dólar ($)",
-                                    'BRL' => "Real (R$)",
-                                ])
-                                ->required()
-                                ->live(),
-                            TextInput::make('amount')
-                                ->label("Valor")
-                                ->prefix(fn (Get $get): string|null => match($get('currency')) {
-                                    'EUR' => "€",
-                                    'USD' => "$",
-                                    'BRL' => "R$",
-                                    default => null
-                                })
-                                ->mask(RawJs::make('$money($input)'))
-                                ->numeric()
-                                ->required()
+                        /** Dados de pagamento */
+                        Select::make('payment_method_id')
+                            ->label("Forma de pagamento")
+                            ->options(PaymentMethod::get()->pluck('name', 'id'))
+                            ->required(),
+                        Radio::make('currency')
+                            ->label("Moeda")
+                            ->inline()
+                            ->default('EUR')
+                            ->options([
+                                'EUR' => "Euro (€)",
+                                'USD' => "Dólar ($)",
+                                'BRL' => "Real (R$)",
+                            ])
+                            ->required()
+                            ->live(),
+                        TextInput::make('amount')
+                            ->label("Valor")
+                            ->prefix(fn (Get $get): string|null => match($get('currency')) {
+                                'EUR' => "€",
+                                'USD' => "$",
+                                'BRL' => "R$",
+                                default => null
+                            })
+                            ->mask(RawJs::make('$money($input)'))
+                            ->numeric()
+                            ->required()
                     ])
                     ->mutateFormDataUsing(function (array $data): array {
                         return [
                             'purchase_date' => now(),
                             'issue_date' => now(),
+                            'ticket_status' => TicketStatusEnum::ISSUED,
+                            'ticket_number' => rand(1, 500),
+                            'booking_code' => rand(1, 500),
+                            'amount' => rand(1, 500),
+                            'currency' => rand(1, 500),
                             ...$data
                         ];
                     })

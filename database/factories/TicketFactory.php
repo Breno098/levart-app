@@ -23,7 +23,6 @@ class TicketFactory extends Factory
             'trip_id' => function () {
                 return \App\Models\Trip::get()->random()->id ?? \App\Models\Trip::factory()->create()->id;
             },
-            'purchase_location' => $this->faker->randomElement(['online', 'counter']),
             'checked_baggage_quantity' => $this->faker->numberBetween(0, 3),
             'checked_baggage_weight' => $this->faker->randomFloat(2, 5, 30),
             'ticket_status' => $this->faker->randomElement(['issued', 'cancelled', 'used']),

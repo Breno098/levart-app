@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
 class Ticket extends Model
@@ -19,7 +20,6 @@ class Ticket extends Model
         'issue_date',
         'checkin_date',
         'trip_id',
-        'purchase_location',
         'checked_baggage_quantity',
         'checked_baggage_weight',
         'ticket_status',
@@ -121,6 +121,14 @@ class Ticket extends Model
     public function passengers(): BelongsToMany|Collection
     {
         return $this->belongsToMany(Passenger::class);
+    }
+
+    /**
+     * @return HasMany|Collection<Passenger>
+     */
+    public function ticketPassagens(): HasMany|Collection
+    {
+        return $this->hasMany(PassengerTicket::class);
     }
 
     /**

@@ -17,9 +17,8 @@ return new class extends Migration
             $table->dateTime('issue_date');
             $table->dateTime('checkin_date')->nullable();
             $table->foreignId('trip_id')->constrained()->onDelete('cascade');
-            $table->string('purchase_location');
-            $table->integer('checked_baggage_quantity');
-            $table->decimal('checked_baggage_weight', 10, 2);
+            $table->integer('checked_baggage_quantity')->default(0);
+            $table->decimal('checked_baggage_weight', 10, 2)->nullable();
             $table->string('ticket_status');
             $table->string('ticket_number');
             $table->string('booking_code');
