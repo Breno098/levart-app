@@ -22,16 +22,15 @@ class TicketSeeder extends Seeder
                 ->create();
         }
 
-        Passenger::factory()
-            ->count(rand(1, 5))
-            ->create()
-            ->each(function(Passenger $passenger) {
-                $ticket = Ticket::get()->random();
+        Ticket::get()->each(function(Ticket $ticket) {
+            $passengers = Passenger::factory()->count(rand(1, 3))->create();
 
+            foreach ($passengers as $passenger) {
                 $ticket->passengers()->attach($passenger, [
                     'seat_type' => fake()->randomElement(['economy', 'business', 'first_class']),
-                    'seat_number' => fake()->unique()->randomNumber(3),
+                    'seat_number' => fake()->randomElement(range(1, 50)),
                 ]);
-            });
+            }
+        });
     }
 }

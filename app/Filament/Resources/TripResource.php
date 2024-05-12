@@ -4,8 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Enums\TripStatusEnum;
 use App\Filament\Resources\TripResource\Pages;
-use App\Filament\Resources\TripResource\RelationManagers;
-use App\Filament\Resources\TripResource\RelationManagers\TicketsRelationManager;
 use App\Models\Airline;
 use App\Models\Airport;
 use App\Models\Trip;
@@ -23,6 +21,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Carbon;
 use Filament\Forms\Get;
 use Illuminate\Support\Collection;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\ActionGroup;
 
 class TripResource extends Resource
 {
@@ -136,7 +136,13 @@ class TripResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Action::make('tickets')
+                        ->label("Ver passangens")
+                        ->icon('heroicon-o-ticket')
+                        ->url(fn (Trip $trip): string => route('filament.admin.resources.trips.tickets', $trip))
+                ])->tooltip('Ações')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -145,19 +151,14 @@ class TripResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            TicketsRelationManager::class
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListTrips::route('/'),
             'create' => Pages\CreateTrip::route('/create'),
             'edit' => Pages\EditTrip::route('/{record}/edit'),
+            'tickets' => Pages\ManageTickets::route('/{record}/tickets'),
         ];
     }
+ 
 }
