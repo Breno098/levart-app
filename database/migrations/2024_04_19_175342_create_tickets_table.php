@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('ticket_status');
             $table->string('ticket_number');
             $table->string('booking_code');
-            $table->foreignId('payment_method_id')->constrained()->onDelete('cascade');
+            $table->string('payment_method');
             $table->integer('amount');
             $table->string('currency');
             $table->string('payer_name')->nullable();

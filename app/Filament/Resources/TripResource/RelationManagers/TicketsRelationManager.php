@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\TripResource\RelationManagers;
 
 use App\Enums\CountryEnum;
+use App\Enums\CurrencyEnum;
+use App\Enums\PaymentMethodEnum;
 use App\Enums\TicketStatusEnum;
 use App\Filament\Resources\PassengerResource;
 use App\Models\Passenger;
@@ -112,29 +114,20 @@ class TicketsRelationManager extends RelationManager
                             ->addActionLabel('Adicionar passageiro'),
 
                         /** Dados de pagamento */
-                        Select::make('payment_method_id')
+                        Select::make('payment_method')
                             ->label("Forma de pagamento")
-                            ->options(PaymentMethod::get()->pluck('name', 'id'))
+                            ->options(PaymentMethodEnum::toValuesWithLabels())
                             ->required(),
                         Radio::make('currency')
                             ->label("Moeda")
                             ->inline()
-                            ->default('EUR')
-                            ->options([
-                                'EUR' => "Euro (€)",
-                                'USD' => "Dólar ($)",
-                                'BRL' => "Real (R$)",
-                            ])
+                            ->default(CurrencyEnum::EUR)
+                            ->options(CurrencyEnum::toValuesWithLabels())
                             ->required()
                             ->live(),
                         TextInput::make('amount')
                             ->label("Valor")
-                            ->prefix(fn (Get $get): string|null => match($get('currency')) {
-                                'EUR' => "€",
-                                'USD' => "$",
-                                'BRL' => "R$",
-                                default => null
-                            })
+                            ->prefix(fn (Get $get): string|null => $get('currency')?->signal())
                             ->mask(RawJs::make('$money($input)'))
                             ->numeric()
                             ->required()

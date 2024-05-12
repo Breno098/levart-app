@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PaymentMethodEnum;
 use App\Enums\TicketStatusEnum;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,7 +26,7 @@ class Ticket extends Model
         'ticket_status',
         'ticket_number',
         'booking_code',
-        'payment_method_id',
+        'payment_method',
         'amount',
         'currency',
     ];
@@ -34,7 +35,8 @@ class Ticket extends Model
         'purchase_date' => 'datetime',
         'issue_date' => 'datetime',
         'checkin_date' => 'datetime',
-        'ticket_status' => TicketStatusEnum::class
+        'ticket_status' => TicketStatusEnum::class,
+        'payment_method' => PaymentMethodEnum::class
     ];
 
     /**
@@ -129,13 +131,5 @@ class Ticket extends Model
     public function ticketPassagens(): HasMany|Collection
     {
         return $this->hasMany(PassengerTicket::class);
-    }
-
-    /**
-     * @return BelongsTo|PaymentMethod
-     */
-    public function paymentMethod(): BelongsTo|PaymentMethod
-    {
-        return $this->belongsTo(PaymentMethod::class);
     }
 }
